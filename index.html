@@ -1,0 +1,848 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+    <title>Sistema Unificado de Ferramentas de Rede v3.1</title>
+    
+    <!-- Meta tags do PWA e iOS -->
+    <meta name="theme-color" content="#007AFF">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="Ferramentas Rede">
+    <link rel="apple-touch-icon" href="icons/icon-192.png">
+    
+    <!-- Manifest do PWA -->
+    <link rel="manifest" href="manifest.json">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Folha de Estilo Externa -->
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Cabeçalho -->
+        <div class="app-header">
+            <div class="app-title">
+                <i class="fas fa-network-wired"></i> Sistema Unificado de Ferramentas de Rede
+                <div class="version-badge">v3.1</div>
+            </div>
+            
+            <!-- Barra de Controles -->
+            <div class="controls-bar">
+                <button class="theme-toggle" id="themeToggle" aria-label="Alternar tema claro/escuro">
+                    <i class="fas fa-moon"></i>
+                </button>
+                <button class="export-btn" id="exportAll" aria-label="Exportar todos os dados">
+                    <i class="fas fa-file-export"></i> Exportar
+                </button>
+                <button class="reset-btn" id="resetAll" aria-label="Resetar todas as ferramentas">
+                    <i class="fas fa-redo"></i> Resetar
+                </button>
+            </div>
+        </div>
+        
+        <!-- Sistema de Abas -->
+        <nav class="tabs-container" role="tablist" aria-label="Ferramentas de rede">
+            <button class="tab-button active" role="tab" aria-selected="true" aria-controls="carimbo" data-tab="carimbo">
+                <i class="fas fa-stamp"></i> Carimbo
+            </button>
+            <button class="tab-button" role="tab" aria-selected="false" aria-controls="calculadora" data-tab="calculadora">
+                <i class="fas fa-calculator"></i> Calculadora
+            </button>
+            <button class="tab-button" role="tab" aria-selected="false" aria-controls="tabela" data-tab="tabela">
+                <i class="fas fa-table"></i> Tabela
+            </button>
+            <button class="tab-button" role="tab" aria-selected="false" aria-controls="nsap" data-tab="nsap">
+                <i class="fas fa-code-branch"></i> NSAP
+            </button>
+            <button class="tab-button" role="tab" aria-selected="false" aria-controls="clientes" data-tab="clientes">
+                <i class="fas fa-database"></i> Banco de Dados
+            </button>
+        </nav>
+        
+        <!-- ABA 1: CARIMBO DE REDE EXTERNA E CONVERSOR DE IMAGEM -->
+        <div id="carimbo" class="tab-content active" role="tabpanel" aria-labelledby="carimbo">
+            <h2><i class="fas fa-stamp"></i> CARIMBO DE REDE EXTERNA</h2>
+            
+            <form id="carimboForm" novalidate>
+                <div class="form-group">
+                    <label for="tecnico">
+                        <i class="fas fa-user"></i> Técnico - Nome/TEL: <span class="required">*</span>
+                    </label>
+                    <input type="text" id="tecnico" name="tecnico" required placeholder="João Silva - (11) 99999-9999">
+                    <div class="error-message" id="error-tecnico">
+                        <i class="fas fa-exclamation-circle"></i> Campo obrigatório
+                    </div>
+                </div>
+            
+                <div class="form-group">
+                    <label for="rotaCabo">
+                        <i class="fas fa-route"></i> Rota Completa do Cabo: <span class="required">*</span>
+                    </label>
+                    <input type="text" id="rotaCabo" name="rotaCabo" required placeholder="Ex: ARQ_FI_SCL_NJ">
+                    <div class="error-message" id="error-rotaCabo">
+                        <i class="fas fa-exclamation-circle"></i> Campo obrigatório
+                    </div>
+                </div>
+            
+                <div class="form-group">
+                    <label for="numeroCabo">
+                        <i class="fas fa-hashtag"></i> Número do Cabo:
+                    </label>
+                    <input type="text" id="numeroCabo" name="numeroCabo" placeholder="Ex: CAB-12345">
+                </div>
+            
+                <div class="form-group">
+                    <label for="fibrasPrioritarias">
+                        <i class="fas fa-fiber"></i> Fibras Prioritárias:
+                    </label>
+                    <input type="text" id="fibrasPrioritarias" name="fibrasPrioritarias" placeholder="Ex: F17, F18">
+                </div>
+            
+                <div class="form-group">
+                    <label for="capacidadeCabo">
+                        <i class="fas fa-bolt"></i> Capacidade do cabo:
+                    </label>
+                    <input type="text" id="capacidadeCabo" name="capacidadeCabo" inputmode="numeric" pattern="[0-9]*" placeholder="Ex: 144">
+                </div>
+            
+                <div class="form-group">
+                    <label for="fila">
+                        <i class="fas fa-layer-group"></i> Fila:
+                    </label>
+                    <input type="text" id="fila" name="fila" placeholder="Ex: 12">
+                </div>
+            
+                <div class="form-group">
+                    <label for="bastidor">
+                        <i class="fas fa-server"></i> Bastidor:
+                    </label>
+                    <input type="text" id="bastidor" name="bastidor" placeholder="Ex: BAST-01">
+                </div>
+            
+                <div class="form-group">
+                    <label for="bandeja">
+                        <i class="fas fa-tray"></i> Bandeja:
+                    </label>
+                    <input type="text" id="bandeja" name="bandeja" placeholder="Ex: BAN-02">
+                </div>
+            
+                <div class="form-group">
+                    <label for="medicaoCentralCliente">
+                        <i class="fas fa-ruler"></i> Medição CENTRAL → Cliente (metros):
+                    </label>
+                    <input type="number" id="medicaoCentralCliente" name="medicaoCentralCliente" step="0.01" min="0" placeholder="0.00">
+                </div>
+            
+                <div class="form-group">
+                    <label for="medicaoClienteCentral">
+                        <i class="fas fa-ruler-vertical"></i> Medição Cliente → CENTRAL (metros):
+                    </label>
+                    <input type="number" id="medicaoClienteCentral" name="medicaoClienteCentral" step="0.01" min="0" placeholder="0.00">
+                </div>
+            
+                <div class="form-group">
+                    <label for="distanciaTotal">
+                        <i class="fas fa-road"></i> Distância total (metros):
+                    </label>
+                    <input type="number" id="distanciaTotal" name="distanciaTotal" step="0.01" min="0" placeholder="0.00">
+                    <div class="calculation-helper">
+                        <i class="fas fa-lightbulb"></i> Preencha dois campos de medição para calcular o terceiro automaticamente.
+                    </div>
+                </div>
+            
+                <div class="form-group">
+                    <label><i class="fas fa-car"></i> Houve Deslocamento:</label>
+                    <div class="radio-group">
+                        <input type="radio" id="houveDeslocamentoSim" name="houveDeslocamento" value="Sim">
+                        <label class="radio-label" for="houveDeslocamentoSim">Sim</label>
+                        <input type="radio" id="houveDeslocamentoNao" name="houveDeslocamento" value="Não" checked> 
+                        <label class="radio-label" for="houveDeslocamentoNao">Não</label>
+                    </div>
+                </div>
+            
+                <div class="form-group">
+                    <label for="tempoDeslocamento">
+                        <i class="fas fa-clock"></i> Tempo de Deslocamento:
+                    </label>
+                    <input type="text" id="tempoDeslocamento" name="tempoDeslocamento" placeholder="Ex: 2h 30min">
+                </div>
+            
+                <div class="form-group">
+                    <label><i class="fas fa-ticket-alt"></i> TA ou Ticket:</label>
+                    <div class="radio-group">
+                        <input type="radio" id="TA" name="TAouTicket" value="TA" checked> 
+                        <label class="radio-label" for="TA">TA</label>
+                        <input type="radio" id="ticket" name="TAouTicket" value="Ticket">
+                        <label class="radio-label" for="ticket">Ticket</label>
+                    </div>
+                </div>
+            
+                <div class="form-group">
+                    <label for="numeroTAouTicket">
+                        <i class="fas fa-hashtag"></i> Número:
+                    </label>
+                    <input type="text" id="numeroTAouTicket" name="numeroTAouTicket" placeholder="Ex: TA-2023-12345">
+                </div>
+            
+                <div class="form-group">
+                    <label for="cliente">
+                        <i class="fas fa-user-tie"></i> Cliente: <span class="required">*</span>
+                    </label>
+                    <input type="text" id="cliente" name="cliente" required placeholder="Nome do cliente">
+                    <div class="error-message" id="error-cliente">
+                        <i class="fas fa-exclamation-circle"></i> Campo obrigatório
+                    </div>
+                </div>
+            
+                <div class="form-group">
+                    <label for="cienteRedeExterna">
+                        <i class="fas fa-user-check"></i> Ciente Rede Externa:
+                    </label>
+                    <input type="text" id="cienteRedeExterna" name="cienteRedeExterna" placeholder="Nome do responsável">
+                </div>
+            </form>
+
+            <div class="btn-container">
+                <button type="button" class="btn btn-primary" onclick="gerarResultado()" aria-label="Gerar carimbo de rede externa">
+                    <i class="fas fa-stamp"></i> Gerar Carimbo
+                </button>
+                <button type="button" class="btn btn-secondary" onclick="limparFormulario()" aria-label="Limpar formulário">
+                    <i class="fas fa-trash"></i> Limpar
+                </button>
+                <button type="button" class="btn btn-success" onclick="copiarResultado()" aria-label="Copiar carimbo para área de transferência">
+                    <i class="fas fa-copy"></i> Copiar
+                </button>
+                <button type="button" class="btn btn-warning" onclick="exportarParaPDF()" aria-label="Exportar carimbo como PDF">
+                    <i class="fas fa-file-pdf"></i> Exportar PDF
+                </button>
+            </div>
+            
+            <div class="loading-spinner" id="carimboSpinner"></div>
+            <div class="success-message" id="successMessage"></div>
+            <div id="resultado" aria-live="polite"></div>
+            
+            <!-- Conversor de Imagem -->
+            <h2 style="margin-top: 50px;"><i class="fas fa-image"></i> CONVERSOR DE IMAGEM</h2>
+
+            <div class="form-group">
+                <label for="bmpUploader">
+                    <i class="fas fa-file-upload"></i> Selecione a imagem BMP:
+                </label>
+                <input type="file" id="bmpUploader" accept=".bmp,image/bmp" multiple>
+            </div>
+
+            <div class="form-group">
+                <label><i class="fas fa-cog"></i> Formato de saída:</label>
+                <div class="radio-group">
+                    <input type="radio" id="formatPng" name="outputFormat" value="png" checked>
+                    <label class="radio-label" for="formatPng">PNG</label>
+                    <input type="radio" id="formatJpeg" name="outputFormat" value="jpeg">
+                    <label class="radio-label" for="formatJpeg">JPEG</label>
+                    <input type="radio" id="formatWebp" name="outputFormat" value="webp">
+                    <label class="radio-label" for="formatWebp">WebP</label>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="quality">
+                    <i class="fas fa-compress"></i> Qualidade JPEG/WebP (1-100):
+                </label>
+                <input type="range" id="quality" class="quality-slider" min="1" max="100" value="90">
+                <span id="qualityValue">90%</span>
+            </div>
+            
+            <div class="btn-container">
+                <button type="button" class="btn btn-primary" id="convertBtn" aria-label="Converter imagem">
+                    <i class="fas fa-sync-alt"></i> Converter Imagem
+                </button>
+            </div>
+            
+            <img id="imagePreview" class="image-preview" alt="Pré-visualização da imagem">
+            <div class="loading-spinner" id="conversionSpinner"></div>
+            <div id="conversionResult" aria-live="polite"></div>
+        </div>
+        
+        <!-- ABA 2: CALCULADORA DE ENLACE ÓPTICO -->
+        <div id="calculadora" class="tab-content" role="tabpanel" aria-labelledby="calculadora">
+            <h2><i class="fas fa-calculator"></i> Calculadora Avançada de Enlace Óptico</h2>
+            
+            <!-- Seletor de Presets -->
+            <div class="preset-selector">
+                <button class="preset-btn active" data-preset="default">Padrão</button>
+                <button class="preset-btn" data-preset="1310nm">Fibra 1310nm</button>
+                <button class="preset-btn" data-preset="1550nm">Fibra 1550nm</button>
+                <button class="preset-btn" data-preset="long-haul">Longa Distância</button>
+                <button class="preset-btn" data-preset="short-haul">Curta Distância</button>
+            </div>
+            
+            <div class="input-group">
+                <label for="tx">
+                    <i class="fas fa-broadcast-tower"></i> Potência de Transmissão (Tx) [dBm]
+                    <span class="tooltip-icon">?<span class="tooltip-text">Potência do sinal na saída do transmissor. Fornecida pelo fabricante do módulo (SFP, GBIC). Valores típicos: -5 a +3 dBm.</span></span>
+                </label>
+                <input type="number" id="tx" value="-5" step="0.01" aria-describedby="txHelp">
+            </div>
+
+            <div class="input-group">
+                <label for="rx">
+                    <i class="fas fa-satellite-dish"></i> Sensibilidade do Receptor (Rx) [dBm]
+                    <span class="tooltip-icon">?<span class="tooltip-text">Mínima potência de sinal que o receptor consegue detectar. Também chamada de limiar de recepção. Valores típicos: -18 a -28 dBm.</span></span>
+                </label>
+                <input type="number" id="rx" value="-25" step="0.01" aria-describedby="rxHelp">
+            </div>
+
+            <div class="input-group">
+                <label for="distancia">
+                    <i class="fas fa-road"></i> Distância do Enlace [km]
+                    <span class="tooltip-icon">?<span class="tooltip-text">Comprimento total do cabo de fibra óptica entre o transmissor e o receptor. Inclua todos os segmentos.</span></span>
+                </label>
+                <input type="number" id="distancia" value="40" step="0.1" min="0" aria-describedby="distanciaHelp">
+            </div>
+
+            <div class="input-group">
+                <label for="perdaFibra">
+                    <i class="fas fa-wave-square"></i> Atenuação da Fibra [dB/km]
+                    <span class="tooltip-icon">?<span class="tooltip-text">Perda de sinal por quilômetro na fibra. 0.35 dB/km para 1310nm ou 0.22 dB/km para 1550nm são valores típicos.</span></span>
+                </label>
+                <input type="number" id="perdaFibra" value="0.22" step="0.01" min="0" aria-describedby="perdaFibraHelp">
+            </div>
+            
+            <div class="input-group">
+                <label for="numConectores">
+                    <i class="fas fa-plug"></i> Número de Conectores
+                    <span class="tooltip-icon">?<span class="tooltip-text">Total de acopladores ópticos no caminho (ex: nos DIOs). Mínimo de 2 (um em cada ponta).</span></span>
+                </label>
+                <input type="number" id="numConectores" value="2" step="1" min="0" aria-describedby="numConectoresHelp">
+            </div>
+            
+            <div class="input-group">
+                <label for="perdaConector">
+                    <i class="fas fa-plug"></i> Perda por Conector [dB]
+                    <span class="tooltip-icon">?<span class="tooltip-text">Perda de sinal em cada conector. Um valor típico e seguro é 0.75 dB. Para conectores APC pode ser menor.</span></span>
+                </label>
+                <input type="number" id="perdaConector" value="0.75" step="0.01" min="0" aria-describedby="perdaConectorHelp">
+            </div>
+
+            <div class="input-group">
+                <label for="numEmendas">
+                    <i class="fas fa-link"></i> Número de Emendas
+                    <span class="tooltip-icon">?<span class="tooltip-text">Total de fusões (emendas) ao longo do cabo. Inclua todas as emendas permanentes.</span></span>
+                </label>
+                <input type="number" id="numEmendas" value="4" step="1" min="0" aria-describedby="numEmendasHelp">
+            </div>
+
+            <div class="input-group">
+                <label for="perdaEmenda">
+                    <i class="fas fa-link"></i> Perda por Emenda [dB]
+                    <span class="tooltip-icon">?<span class="tooltip-text">Perda de sinal em cada fusão. Um valor típico é 0.1 dB para emendas bem feitas.</span></span>
+                </label>
+                <input type="number" id="perdaEmenda" value="0.1" step="0.01" min="0" aria-describedby="perdaEmendaHelp">
+            </div>
+
+            <div class="input-group">
+                <label for="margem">
+                    <i class="fas fa-shield-alt"></i> Margem de Segurança [dB]
+                    <span class="tooltip-icon">?<span class="tooltip-text">Valor de segurança para cobrir degradação do laser, reparos futuros e outras perdas não previstas. Recomenda-se no mínimo 3 dB.</span></span>
+                </label>
+                <input type="number" id="margem" value="3" step="0.1" min="0" aria-describedby="margemHelp">
+            </div>
+
+            <div class="btn-container">
+                <button class="btn btn-primary" onclick="calcularEnlace()" aria-label="Calcular viabilidade do enlace óptico">
+                    <i class="fas fa-calculator"></i> Calcular Enlace
+                </button>
+                <button class="btn btn-success" onclick="gerarRelatorioCalculadora()" aria-label="Gerar relatório PDF da calculadora">
+                    <i class="fas fa-file-pdf"></i> Gerar Relatório
+                </button>
+                <button class="btn btn-secondary" onclick="salvarConfiguracao()" aria-label="Salvar configuração atual">
+                    <i class="fas fa-save"></i> Salvar Config
+                </button>
+            </div>
+
+            <div class="loading-spinner" id="calcSpinner"></div>
+            <div id="resultadoCalculadora" aria-live="polite"></div>
+        </div>
+        
+        <!-- ABA 3: TABELA PADRÃO ÁBACO -->
+        <div id="tabela" class="tab-content" role="tabpanel" aria-labelledby="tabela">
+            <div class="logo-container">
+                <img src="https://logopng.com.br/logos/vivo-120.svg" alt="Logo Vivo Telecom - O&M BACKBONE TX/MÓVEL">
+                <div class="logo-text">O&M BACKBONE TX/MÓVEL</div>
+            </div>
+
+            <h2><i class="fas fa-table"></i> TABELA PADRÃO ÁBACO</h2>
+
+            <div class="form-group" style="margin-bottom: 30px;">
+                <label for="searchTable"><i class="fas fa-search"></i> Buscar na tabela:</label>
+                <input type="text" id="searchTable" placeholder="Digite pulso, distância ou duração...">
+            </div>
+
+            <table id="abacoTable">
+                <thead>
+                    <tr>
+                        <th>Pulso</th>
+                        <th>Distância</th>
+                        <th>Duração</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>30ns</td>
+                        <td>20km</td>
+                        <td>1 minuto</td>
+                    </tr>
+                    <tr>
+                        <td>100ns</td>
+                        <td>50km</td>
+                        <td>1 minuto</td>
+                    </tr>
+                    <tr>
+                        <td>300ns</td>
+                        <td>80km ou 100km</td>
+                        <td>2 minutos</td>
+                    </tr>
+                    <tr>
+                        <td>1us</td>
+                        <td>100km ou 120km</td>
+                        <td>2 minutos</td>
+                    </tr>
+                    <tr>
+                        <td>3us/5us</td>
+                        <td>120km</td>
+                        <td>3 minutos</td>
+                    </tr>
+                    <tr>
+                        <td>10us/20us</td>
+                        <td>150km</td>
+                        <td>3 minutos</td>
+                    </tr>
+                    <tr>
+                        <td colspan="3">
+                            <strong><i class="fas fa-info-circle"></i> No ato de abertura de TA de Rede Externa</strong>, deverá ser anexado curvas de OTDR em arquivo .sor e utilizar o padrão para nomear as fibras: 
+                            <br><br>
+                            <code>CT#XXX_XXX_XX_FXX_TX</code> (Ex: CT#220_ARQ_FI_F17_TX e CT#220_ARQ_FI_F17_RX).
+                            <br><br>
+                            <strong><i class="fas fa-folder"></i> Para facilitar a inserção dos anexos ao TA</strong>, deverá ser montada uma pasta com os arquivos com o nome da Rota e a data de criação, e a mesma deverá ser compactada 
+                            (Ex: <code>ARQ_FI_SCL_NJ_27_06_23.zip</code>).
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        
+        <!-- ABA 4: SEPARADOR NSAP -->
+        <div id="nsap" class="tab-content" role="tabpanel" aria-labelledby="nsap">
+            <div class="nsap-container">
+                <div class="nsap-header">
+                    <i class="fas fa-code-branch"></i>
+                    <h2>Separador de NSAP (formato Q3 da tela "NE Settings")</h2>
+                </div>
+
+                <div class="nsap-main">
+                    <section class="nsap-panel">
+                        <label class="nsap-label" for="nsapInput">
+                            <i class="fas fa-paste"></i> Cole aqui a string NSAP (40 hex):
+                        </label>
+                        <input class="nsap-input" id="nsapInput" type="text" 
+                               placeholder="Ex.: 39076F800000000000000300E10007720F61541D" 
+                               autocomplete="off" aria-describedby="nsapHelp" />
+                        <div class="nsap-actions">
+                            <button class="nsap-btn primary" id="btnParse">
+                                <i class="fas fa-cut"></i> Separar
+                            </button>
+                            <button class="nsap-btn" id="btnClear">
+                                <i class="fas fa-eraser"></i> Limpar
+                            </button>
+                            <button class="nsap-btn" id="btnCopyAll">
+                                <i class="fas fa-copy"></i> Copiar Tudo
+                            </button>
+                            <span class="nsap-pill">
+                                <i class="fas fa-ruler"></i> Comprimento: <span id="len">0</span>/40
+                            </span>
+                        </div>
+                        <div class="nsap-error" id="nsapError"></div>
+
+                        <p class="nsap-muted" style="font-size: 13px; margin-top: 15px; color: var(--muted);">
+                            <i class="fas fa-info-circle"></i> Estrutura: 
+                            <span class="nsap-mono" style="font-family: monospace;">AFI(2) | IDI(4) | VER(2) | AUTH(6) | RES(4) | DOM(4) | Area(4) | SystemID(12) | NSAP Selector(2)</span>
+                        </p>
+                    </section>
+
+                    <section class="nsap-panel" aria-live="polite">
+                        <div class="nsap-row">
+                            <div class="nsap-key">AFI</div>
+                            <div class="nsap-value" id="afi">–<button class="copy-btn" data-copy="afi">Copiar</button></div>
+                        </div>
+                        <div class="nsap-row">
+                            <div class="nsap-key">IDI</div>
+                            <div class="nsap-value" id="idi">–<button class="copy-btn" data-copy="idi">Copiar</button></div>
+                        </div>
+                        <div class="nsap-row">
+                            <div class="nsap-key">VER</div>
+                            <div class="nsap-value" id="ver">–<button class="copy-btn" data-copy="ver">Copiar</button></div>
+                        </div>
+                        <div class="nsap-row">
+                            <div class="nsap-key">AUTH</div>
+                            <div class="nsap-value" id="auth">–<button class="copy-btn" data-copy="auth">Copiar</button></div>
+                        </div>
+                        <div class="nsap-row">
+                            <div class="nsap-key">RES</div>
+                            <div class="nsap-value" id="res">–<button class="copy-btn" data-copy="res">Copiar</button></div>
+                        </div>
+                        <div class="nsap-row">
+                            <div class="nsap-key">DOM</div>
+                            <div class="nsap-value" id="dom">–<button class="copy-btn" data-copy="dom">Copiar</button></div>
+                        </div>
+                        <div class="nsap-row">
+                            <div class="nsap-key">Area Address</div>
+                            <div class="nsap-value" id="area">–<button class="copy-btn" data-copy="area">Copiar</button></div>
+                        </div>
+                        <div class="nsap-row">
+                            <div class="nsap-key">System ID</div>
+                            <div class="nsap-value" id="sys">–<button class="copy-btn" data-copy="sys">Copiar</button></div>
+                        </div>
+                        <div class="nsap-row">
+                            <div class="nsap-key">NSAP Selector</div>
+                            <div class="nsap-value" id="sel">–<button class="copy-btn" data-copy="sel">Copiar</button></div>
+                        </div>
+                    </section>
+                </div>
+
+                <div class="nsap-footer">
+                    <i class="fas fa-lightbulb"></i> Dica: a string pode ser colada com espaços ou hífens; o sistema normaliza automaticamente.
+                </div>
+            </div>
+        </div>
+        
+        <!-- ABA 5: BANCO DE DADOS (CRM COM FIREBASE) -->
+        <div id="clientes" class="tab-content" role="tabpanel" aria-labelledby="clientes">
+            
+            <!-- Tela de Login (Exibida se desautenticado) -->
+            <div id="authWrapper" style="display: none;">
+                <div class="login-container">
+                    <div class="login-header">
+                        <i class="fas fa-lock"></i>
+                        <h3>Área Restrita</h3>
+                        <p>Entre com suas credenciais para acessar a Gestão de Clientes e Equipamentos.</p>
+                    </div>
+                    <form id="loginFormElement" class="db-form">
+                        <div class="form-group">
+                            <label for="loginEmail"><i class="fas fa-envelope"></i> E-mail</label>
+                            <input type="email" id="loginEmail" required placeholder="tecnico@empresa.com">
+                        </div>
+                        <div class="form-group">
+                            <label for="loginPassword"><i class="fas fa-key"></i> Senha</label>
+                            <input type="password" id="loginPassword" required placeholder="••••••••">
+                        </div>
+                        <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 15px;">
+                            <i class="fas fa-sign-in-alt"></i> Entrar
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Conteúdo do Dashboard (Exibido se autenticado) -->
+            <div id="databaseUIContent" style="display: none;">
+                <!-- Barra superior do usuário autenticado -->
+                <div class="user-panel">
+                    <div class="user-info">
+                        <i class="fas fa-user-circle"></i>
+                        <span id="userEmail">carregando...</span>
+                    </div>
+                    <button id="btnLogout" class="btn-logout">
+                        <i class="fas fa-sign-out-alt"></i> Sair
+                    </button>
+                </div>
+
+                <div class="database-container">
+                    <!-- Cabeçalho -->
+                    <div class="db-header">
+                        <h2><i class="fas fa-database"></i> GESTÃO DE CLIENTES E EQUIPAMENTOS</h2>
+                        <p class="db-subtitle">Cadastro, consulta e histórico completo (Persistido via Firestore)</p>
+                    </div>
+
+                    <!-- Estatísticas Rápidas -->
+                    <div class="stats-container">
+                        <div class="stat-card">
+                            <i class="fas fa-users"></i>
+                            <div>
+                                <h3 id="totalClientes">0</h3>
+                               <p>Clientes</p>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <i class="fas fa-ticket-alt"></i>
+                            <div>
+                                <h3 id="totalChamados">0</h3>
+                                <p>Chamados</p>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <i class="fas fa-cogs"></i>
+                            <div>
+                                <h3 id="totalEquipamentos">0</h3>
+                                <p>Equipamentos</p>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <i class="fas fa-clock"></i>
+                            <div>
+                                <h3 id="chamadosAbertos">0</h3>
+                                <p>Em aberto</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Barra de Ações -->
+                    <div class="db-actions">
+                        <button class="db-btn primary" id="btnNovoRegistro">
+                            <i class="fas fa-plus-circle"></i> Novo Registro
+                        </button>
+                        <button class="db-btn" id="btnExportarDB">
+                            <i class="fas fa-file-export"></i> Exportar CSV
+                        </button>
+                        <button class="db-btn" id="btnImportarDB">
+                            <i class="fas fa-file-import"></i> Importar/Backup
+                        </button>
+                        <button class="db-btn danger" id="btnLimparDB">
+                            <i class="fas fa-trash"></i> Limpar Tudo
+                        </button>
+                        <div class="search-box">
+                            <i class="fas fa-search"></i>
+                            <input type="text" id="dbSearch" placeholder="Buscar em todos os campos...">
+                        </div>
+                    </div>
+
+                    <!-- Filtros Avançados -->
+                    <div class="filters-container">
+                        <div class="filter-group">
+                            <label><i class="fas fa-filter"></i> Filtrar por:</label>
+                            <select id="filterField">
+                                <option value="all">Todos os campos</option>
+                                <option value="numeroChamado">Nº Chamado</option>
+                                <option value="nomeCliente">Cliente</option>
+                                <option value="idProjeto">ID Projeto</option>
+                                <option value="idVantive">ID Vantive</option>
+                                <option value="numeroLP">Nº LP</option>
+                                <option value="status">Status</option>
+                            </select>
+                            <input type="text" id="filterValue" placeholder="Valor para filtrar...">
+                            <button class="filter-btn" id="btnAplicarFiltro">
+                                <i class="fas fa-check"></i> Aplicar
+                            </button>
+                            <button class="filter-btn secondary" id="btnLimparFiltro">
+                                <i class="fas fa-times"></i> Limpar
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Tabela de Dados -->
+                    <div class="table-container">
+                        <table id="clientesTable">
+                            <thead>
+                                <tr>
+                                    <th><i class="fas fa-hashtag"></i> Nº CHAMADO</th>
+                                    <th><i class="fas fa-user"></i> CLIENTE</th>
+                                    <th><i class="fas fa-map-marker-alt"></i> ENDEREÇO</th>
+                                    <th><i class="fas fa-phone"></i> CONTATO</th>
+                                    <th><i class="fas fa-project-diagram"></i> ID PROJETO</th>
+                                    <th><i class="fas fa-id-card"></i> ID VANTIVE</th>
+                                    <th><i class="fas fa-barcode"></i> Nº LP</th>
+                                    <th><i class="fas fa-history"></i> HISTÓRICO</th>
+                                    <th><i class="fas fa-tag"></i> STATUS</th>
+                                    <th><i class="fas fa-calendar"></i> DATA</th>
+                                    <th><i class="fas fa-cogs"></i> AÇÕES</th>
+                                </tr>
+                            </thead>
+                            <tbody id="clientesTableBody">
+                                <!-- Dados carregados via JavaScript -->
+                            </tbody>
+                        </table>
+                        <div class="no-data" id="noDataMessage">
+                            <i class="fas fa-database"></i>
+                            <h3>Nenhum registro encontrado</h3>
+                            <p>Clique em "Novo Registro" para adicionar seu primeiro cliente/equipamento.</p>
+                        </div>
+                    </div>
+
+                    <!-- Paginação -->
+                    <div class="pagination" id="paginationControls">
+                        <button class="page-btn" id="prevPage"><i class="fas fa-chevron-left"></i></button>
+                        <span id="pageInfo">Página 1 de 1</span>
+                        <button class="page-btn" id="nextPage"><i class="fas fa-chevron-right"></i></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="app-footer">
+            <p>Sistema Unificado de Ferramentas de Rede v3.1 | Última atualização: <span id="currentDate"></span></p>
+        </div>
+    </div>
+
+    <!-- Modal de Registro -->
+    <div class="modal" id="registroModal">
+        <div class="modal-content large">
+            <button class="close-modal" id="closeRegistroModal">&times;</button>
+            <h3><i class="fas fa-user-plus"></i> <span id="modalTitle">Novo Registro</span></h3>
+            
+            <form id="registroForm" class="db-form">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="modalNumeroChamado"><i class="fas fa-hashtag"></i> Número do Chamado *</label>
+                        <input type="text" id="modalNumeroChamado" required placeholder="Ex: CHM-2023-00123">
+                    </div>
+                    <div class="form-group">
+                        <label for="modalNomeCliente"><i class="fas fa-user"></i> Nome do Cliente *</label>
+                        <input type="text" id="modalNomeCliente" required placeholder="Nome completo ou razão social">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="modalEndereco"><i class="fas fa-map-marker-alt"></i> Endereço Completo *</label>
+                    <input type="text" id="modalEndereco" required placeholder="Rua, número, bairro, cidade, estado">
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="modalTelefone"><i class="fas fa-phone"></i> Telefone *</label>
+                        <input type="text" id="modalTelefone" required placeholder="(11) 99999-9999">
+                    </div>
+                    <div class="form-group">
+                        <label for="modalEmail"><i class="fas fa-envelope"></i> E-mail</label>
+                        <input type="email" id="modalEmail" placeholder="cliente@empresa.com">
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="modalIdProjeto"><i class="fas fa-project-diagram"></i> ID Projeto</label>
+                        <input type="text" id="modalIdProjeto" placeholder="Ex: PROJ-2023-FIBRA-01">
+                    </div>
+                    <div class="form-group">
+                        <label for="modalIdVantive"><i class="fas fa-id-card"></i> ID Vantive</label>
+                        <input type="text" id="modalIdVantive" placeholder="Ex: VANT-123456">
+                    </div>
+                    <div class="form-group">
+                        <label for="modalNumeroLP"><i class="fas fa-barcode"></i> Número LP</label>
+                        <input type="text" id="modalNumeroLP" placeholder="Ex: LP-789012">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="modalEquipamento"><i class="fas fa-server"></i> Equipamento</label>
+                    <input type="text" id="modalEquipamento" placeholder="Modelo e especificações do equipamento">
+                </div>
+
+                <div class="form-group">
+                    <label for="modalHistorico"><i class="fas fa-history"></i> Histórico (Feed)</label>
+                    <textarea id="modalHistorico" rows="4" placeholder="Registre aqui todo o histórico de atendimento, observações, atualizações..."></textarea>
+                    <small class="form-help">Use timestamps automáticos com Ctrl+Enter</small>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="modalStatus"><i class="fas fa-tag"></i> Status *</label>
+                        <select id="modalStatus" required>
+                            <option value="aberto">Aberto</option>
+                            <option value="em_andamento">Em Andamento</option>
+                            <option value="aguardando">Aguardando Cliente</option>
+                            <option value="concluido">Concluído</option>
+                            <option value="cancelado">Cancelado</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="modalPrioridade"><i class="fas fa-exclamation-triangle"></i> Prioridade</label>
+                        <select id="modalPrioridade">
+                            <option value="baixa">Baixa</option>
+                            <option value="media" selected>Média</option>
+                            <option value="alta">Alta</option>
+                            <option value="urgente">Urgente</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="modalDataPrevista"><i class="fas fa-calendar-check"></i> Previsão</label>
+                        <input type="date" id="modalDataPrevista">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="modalObservacoes"><i class="fas fa-sticky-note"></i> Observações Adicionais</label>
+                    <textarea id="modalObservacoes" rows="3" placeholder="Informações complementares..."></textarea>
+                </div>
+
+                <div class="form-actions">
+                    <button type="button" class="db-btn secondary" id="btnCancelar">
+                        <i class="fas fa-times"></i> Cancelar
+                    </button>
+                    <button type="submit" class="db-btn success" id="btnSalvar">
+                        <i class="fas fa-save"></i> Salvar Registro
+                    </button>
+                    <button type="button" class="db-btn warning" id="btnAdicionarHistorico">
+                        <i class="fas fa-plus"></i> Add. ao Histórico
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal de Detalhes -->
+    <div class="modal" id="detalhesModal">
+        <div class="modal-content xlarge" id="detalhesContent">
+            <!-- Conteúdo carregado dinamicamente -->
+        </div>
+    </div>
+
+    <!-- Modal de Backup -->
+    <div class="modal" id="backupModal">
+        <div class="modal-content">
+            <button class="close-modal" id="closeBackupModal">&times;</button>
+            <h3><i class="fas fa-database"></i> Backup & Restauração</h3>
+            
+            <div class="backup-options">
+                <div class="backup-card">
+                    <i class="fas fa-download"></i>
+                    <h4>Exportar Backup JSON</h4>
+                    <p>Faça backup completo dos registros locais</p>
+                    <button class="db-btn primary" id="btnExportarJSON">
+                        <i class="fas fa-file-export"></i> Exportar JSON
+                    </button>
+                </div>
+                
+                <div class="backup-card">
+                    <i class="fas fa-upload"></i>
+                    <h4>Restaurar Backup JSON</h4>
+                    <p>Importe dados de um backup anterior</p>
+                    <input type="file" id="importFile" accept=".json" style="display: none;">
+                    <button class="db-btn" id="btnSelecionarArquivo">
+                        <i class="fas fa-folder-open"></i> Selecionar Arquivo
+                    </button>
+                    <div id="importStatus"></div>
+                </div>
+                
+                <div class="backup-card">
+                    <i class="fas fa-file-csv"></i>
+                    <h4>Exportar para CSV</h4>
+                    <p>Ideal para visualizar no Excel</p>
+                    <button class="db-btn success" id="btnExportarCSV">
+                        <i class="fas fa-file-excel"></i> Exportar CSV
+                    </button>
+                </div>
+            </div>
+            
+            <div class="backup-info">
+                <p><i class="fas fa-info-circle"></i> <strong>Total de registros:</strong> <span id="totalRegistrosBackup">0</span></p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts e Bibliotecas externas -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script type="module" src="js/app.js"></script>
+</body>
+</html>
