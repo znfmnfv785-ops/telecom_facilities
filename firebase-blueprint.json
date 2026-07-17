@@ -1,0 +1,62 @@
+{
+  "entities": {
+    "Cliente": {
+      "title": "Cliente",
+      "description": "Registro de clientes, atendimentos, ordens de serviço e históricos",
+      "type": "object",
+      "properties": {
+        "id": { "type": "number", "description": "ID numérico identificador único" },
+        "numeroChamado": { "type": "string", "description": "Número do chamado / OS" },
+        "nomeCliente": { "type": "string", "description": "Nome do cliente" },
+        "endereco": { "type": "string", "description": "Endereço físico" },
+        "telefone": { "type": "string", "description": "Telefone de contato" },
+        "email": { "type": "string", "description": "E-mail de contato" },
+        "idProjeto": { "type": "string", "description": "Identificador do projeto" },
+        "idVantive": { "type": "string", "description": "ID Vantive" },
+        "numeroLP": { "type": "string", "description": "Número do LP" },
+        "equipamento": { "type": "string", "description": "Equipamento associado" },
+        "historico": { "type": "array", "description": "Histórico de atualizações do atendimento" },
+        "status": { "type": "string", "enum": ["aberto", "em_andamento", "aguardando", "concluido", "cancelado"] },
+        "prioridade": { "type": "string", "enum": ["baixa", "media", "alta", "urgente"] },
+        "dataPrevista": { "type": "string" },
+        "observacoes": { "type": "string" },
+        "dataCriacao": { "type": "string", "format": "date-time" },
+        "ultimaAtualizacao": { "type": "string", "format": "date-time" }
+      },
+      "required": ["id", "numeroChamado", "nomeCliente", "status", "prioridade"]
+    },
+    "TaRecord": {
+      "title": "Termo de Atendimento",
+      "description": "Termos de atendimento contendo definições, horário de início, acionamento, uso de sobressalentes e resoluções",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "description": "ID do registro no Firestore" },
+        "numeroTa": { "type": "string", "description": "Número identificador do TA" },
+        "definicoes": { "type": "string", "description": "Definições e escopo do atendimento" },
+        "dataInicio": { "type": "string", "description": "Data de início do atendimento" },
+        "horaInicio": { "type": "string", "description": "Horário de início" },
+        "horaAcionado": { "type": "string", "description": "Horário em que foi acionado" },
+        "sobressalenteNecessario": { "type": "boolean", "description": "Indica se foi necessário sobressalente" },
+        "numeroChamadoSobressalente": { "type": "string", "description": "Número do chamado do sobressalente" },
+        "suporteAtendente": { "type": "string", "description": "Nome do suporte que realizou o atendimento" },
+        "tecnicoN1Tx": { "type": "string", "description": "Nome do técnico de N1 TX" },
+        "resolucaoFalha": { "type": "string", "description": "Resolução detalhada da falha" },
+        "status": { "type": "string", "enum": ["correlação", "encerrado"], "description": "Status do atendimento" },
+        "historicoEdicoes": { "type": "array", "items": { "type": "string" }, "description": "Histórico de reaberturas e edições de TA encerrados" },
+        "dataCriacao": { "type": "string", "format": "date-time" },
+        "ultimaAtualizacao": { "type": "string", "format": "date-time" }
+      },
+      "required": ["id", "numeroTa", "definicoes", "dataInicio", "horaInicio", "horaAcionado", "sobressalenteNecessario", "status"]
+    }
+  },
+  "firestore": {
+    "/clientes/{clienteId}": {
+      "schema": "Cliente",
+      "description": "Armazena registros de atendimento de clientes no campo"
+    },
+    "/tas/{taId}": {
+      "schema": "TaRecord",
+      "description": "Armazena registros de Termos de Atendimento (TA)"
+    }
+  }
+}
